@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplicación Web Básica</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .container { max-width: 500px; margin: 0 auto; padding: 20px; text-align: center; }
+    input, button { padding: 10px; font-size: 16px; margin: 10px 0; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>¡Bienvenido!</h1>
+  <form id="nameForm">
+    <input type="text" id="nameInput" placeholder="Ingresa tu nombre" required>
+    <button type="submit">Enviar</button>
+  </form>
+  <h2 id="greeting"></h2>
+</div>
+
+<script>
+  document.getElementById('nameForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('nameInput').value;
+
+    // Enviar el nombre al backend usando fetch
+    fetch('/saludar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: name })
+    })
+            .then(response => response.json())
+            .then(data => {
+              document.getElementById('greeting').innerText = data.greeting;
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+  });
+</script>
+</body>
+</html>
